@@ -3,13 +3,29 @@ import uuid from 'react-native-uuid';
 
 export const TodoContext = createContext({
     showCreateTodo: false,
-    handleDismiss: () => {},
-    openCreateTodoHandler: () => {},
-    addTodo: (text) => {}
+    handleDismiss: () => { },
+    openCreateTodoHandler: () => { },
+    addTodo: (text) => { }
 });
 
 export default function TodoProvider({ children }) {
-    const [todos, setTodos] = useState([]);
+    const [todos, setTodos] = useState([
+        {
+            id: uuid.v4(),
+            text: 'Clean the house',
+            completed: false
+        },
+        {
+            id: uuid.v4(),
+            text: 'Go shopping',
+            completed: false
+        },
+        {
+            id: uuid.v4(),
+            text: 'Do laundry',
+            completed: false
+        }
+    ]);
     const [showCreateTodo, setShowCreateTodo] = useState(false);
 
     const handleDismiss = () => {
@@ -21,11 +37,11 @@ export default function TodoProvider({ children }) {
     };
 
     const addTodo = (text) => {
-        const newTodo = { 
+        const newTodo = {
             id: uuid.v4(),
             text,
             completed: false
-         };
+        };
 
         setTodos(prevTodos => [...prevTodos, newTodo]);
     };

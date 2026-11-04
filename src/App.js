@@ -6,9 +6,9 @@ import BottomBar from './components/bottom-bar/BottomBar';
 import CreateTodo from './components/create-todo/CreateTodo';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import TodoProvider from './contexts/TodoContext';
+import TodoList from './components/todo-list/TodoList';
 
 export default function App() {
-  const { showCreateTodo, handleDismiss, openCreateTodoHandler } = useContext(TodoContext);
 
   return (
     <SafeAreaProvider>
@@ -17,8 +17,10 @@ export default function App() {
         <View style={{ flex: 1 }}>
           <TopBar />
 
-          <CreateTodo />
-          
+          <TodoList />
+
+          <CreateTodo /> 
+
           <BottomBar />
         </View>
       </TodoProvider>

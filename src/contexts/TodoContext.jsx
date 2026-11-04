@@ -1,4 +1,5 @@
 import { createContext, useState } from 'react';
+import uuid from 'react-native-uuid';
 
 export const TodoContext = createContext({
     showCreateTodo: false,
@@ -20,7 +21,13 @@ export default function TodoProvider({ children }) {
     };
 
     const addTodo = (text) => {
-        setTodos(prevTodos => [...prevTodos, { text }]);
+        const newTodo = { 
+            id: uuid.v4(),
+            text,
+            completed: false
+         };
+
+        setTodos(prevTodos => [...prevTodos, newTodo]);
     };
 
     const value = {

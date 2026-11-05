@@ -4,14 +4,15 @@ export default function TodoItem({
     id,
     text,
     completed,
-    onPress
+    onPress,
+    iconName
 }) {
     return (
         <List.Item
             onPress={onPress}
             key={id}
             title={text}
-            right={() => <List.Icon icon={completed ? 'check' : 'checkbox-blank-outline'} />}
+            right={() => <List.Icon icon={iconName} />}
         />
     );
 }

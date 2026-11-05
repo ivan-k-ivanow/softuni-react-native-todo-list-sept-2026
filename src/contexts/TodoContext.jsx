@@ -6,7 +6,15 @@ export const TodoContext = createContext({
     handleDismiss: () => { },
     openCreateTodoHandler: () => { },
     addTodo: (text) => { },
-    toggleTodo: (id) => { }
+    toggleTodo: (id) => { },
+    mode: 'view',
+    /**
+     * 
+     * @param {"view" | "edit" | "delete"} mode 
+     */
+    switchMode: (mode = 'view') => { },
+    deleteTodo: (id) => { },
+    editTodo: (id) => { },
 });
 
 export default function TodoProvider({ children }) {
@@ -28,6 +36,8 @@ export default function TodoProvider({ children }) {
         }
     ]);
     const [showCreateTodo, setShowCreateTodo] = useState(false);
+    const [mode, setMode] = useState('view');
+    const [selectedTodo, setSelectedTodo] = useState(null);
 
     const handleDismiss = () => {
         setShowCreateTodo(false);
@@ -46,6 +56,16 @@ export default function TodoProvider({ children }) {
     };
 
     const addTodo = (text) => {
+        if (selectedTodo) {
+            setTodos(prevTodos =>
+                prevTodos.map(todo =>
+                    todo.id === selectedTodo.id ? { ...todo, text } : todo
+                )
+            );
+            setSelectedTodo(null);
+            return;
+        }
+
         const newTodo = {
             id: uuid.v4(),
             text,
@@ -55,13 +75,35 @@ export default function TodoProvider({ children }) {
         setTodos(prevTodos => [...prevTodos, newTodo]);
     };
 
+    const deleteTodo = (id) => {
+        setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+    };
+
+    const editTodo = (id) => {
+        setSelectedTodo(todos.find(todo => todo.id === id));
+        setShowCreateTodo(true);
+    };
+
+    const switchMode = (newMode = 'view') => {
+        const validModes = ['view', 'edit', 'delete'];
+        if (!validModes.includes(newMode)) {
+            return;
+        }
+        setMode(newMode === mode ? 'view' : newMode);
+    };
+
     const value = {
         showCreateTodo,
         handleDismiss,
         openCreateTodoHandler,
         todos,
         addTodo,
-        toggleTodo
+        toggleTodo,
+        deleteTodo,
+        mode,
+        switchMode,
+        editTodo,
+        selectedTodo,
     }
 
     return (
